@@ -3,12 +3,11 @@ package server
 import (
 	"fmt"
 	"net/http"
-	"os"
-	"strconv"
 	"time"
 
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/to-the-moshpit/sandpit-turtle/internal/database"
+	"github.com/to-the-moshpit/sandpit-turtle/internal/environment"
 )
 
 type Server struct {
@@ -17,12 +16,11 @@ type Server struct {
 	db database.Service
 }
 
-func NewServer() *http.Server {
-	port, _ := strconv.Atoi(os.Getenv("PORT"))
+func NewServer(env *environment.Env) *http.Server {
 	NewServer := &Server{
-		port: port,
+		port: env.Port,
 
-		db: database.New(),
+		db: database.New(env),
 	}
 
 	// Declare Server config

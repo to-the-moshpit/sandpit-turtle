@@ -9,6 +9,8 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/joho/godotenv"
+	"github.com/to-the-moshpit/sandpit-turtle/internal/environment"
 	"github.com/to-the-moshpit/sandpit-turtle/internal/server"
 )
 
@@ -39,7 +41,16 @@ func gracefulShutdown(apiServer *http.Server, done chan bool) {
 
 func main() {
 
-	server := server.NewServer()
+	err := godotenv.Load()
+	if err != nil {
+		// We could just change this to a warning if it is being run in a
+		// container it might actually use the real ENV vars
+		log.Fatal("Error loading .env file")
+	}
+
+	env := environment.New()
+
+	server := server.NewServer(env)
 
 	// Create a done channel to signal when the shutdown is complete
 	done := make(chan bool, 1)
@@ -47,7 +58,7 @@ func main() {
 	// Run graceful shutdown in a separate goroutine
 	go gracefulShutdown(server, done)
 
-	err := server.ListenAndServe()
+	err = server.ListenAndServe()
 	if err != nil && err != http.ErrServerClosed {
 		panic(fmt.Sprintf("http server error: %s", err))
 	}
