@@ -1,5 +1,5 @@
 services:
-  psql_bp:
+  db:
     image: postgres:latest
     restart: unless-stopped
     environment:
