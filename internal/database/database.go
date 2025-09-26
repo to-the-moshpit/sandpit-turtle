@@ -11,6 +11,7 @@ import (
 	_ "github.com/jackc/pgx/v5/stdlib"
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/to-the-moshpit/sandpit-turtle/internal/environment"
+	"github.com/to-the-moshpit/sandpit-turtle/internal/logger"
 )
 
 // Service represents a service that interacts with a database.
@@ -27,6 +28,7 @@ type Service interface {
 type service struct {
 	env *environment.Env
 	db  *sql.DB
+	log logger.Logger
 }
 
 var dbInstance *service
@@ -53,6 +55,7 @@ func New(env *environment.Env) Service {
 	dbInstance = &service{
 		db:  db,
 		env: env,
+		log: logger.New(env),
 	}
 	return dbInstance
 }
@@ -113,6 +116,6 @@ func (s *service) Health() map[string]string {
 // If the connection is successfully closed, it returns nil.
 // If an error occurs while closing the connection, it returns the error.
 func (s *service) Close() error {
-	log.Printf("Disconnected from database: %s", s.env.Db.Database)
+	s.log.Infof("Disconnected from database: %s", s.env.Db.Database)
 	return s.db.Close()
 }
