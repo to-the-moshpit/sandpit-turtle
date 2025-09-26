@@ -10,6 +10,7 @@ type OsEnv = string
 const (
 	PORT        OsEnv = "PORT"
 	APP_ENV     OsEnv = "APP_ENV"
+	LOG_LEVEL   OsEnv = "LOG_LEVEL"
 	DB_HOST     OsEnv = "DB_HOST"
 	DB_PORT     OsEnv = "DB_PORT"
 	DB_DATABASE OsEnv = "DB_DATABASE"
@@ -28,9 +29,10 @@ type DbEnv struct {
 }
 
 type Env struct {
-	Port   int
-	AppEnv AppEnv
-	Db     *DbEnv
+	Port     int
+	AppEnv   AppEnv
+	LogLevel string
+	Db       *DbEnv
 }
 
 var envInstance *Env
@@ -45,8 +47,9 @@ func New() *Env {
 
 func Refresh() {
 	envInstance = &Env{
-		Port:   getIntValue(PORT),
-		AppEnv: determineAppEnv(),
+		Port:     getIntValue(PORT),
+		AppEnv:   determineAppEnv(),
+		LogLevel: getStringValue(LOG_LEVEL),
 		Db: &DbEnv{
 			Host:     getStringValue(DB_HOST),
 			Port:     getStringValue(DB_PORT),
