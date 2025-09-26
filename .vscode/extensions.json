@@ -1,0 +1,7 @@
+{
+  "recommendations": [
+    "github.vscode-pull-request-github",
+    "golang.go",
+    "ms-ossdata.vscode-pgsql"
+  ]
+}
