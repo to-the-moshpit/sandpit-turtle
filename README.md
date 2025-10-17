@@ -61,3 +61,17 @@ Clean up binary from the last build:
 ```bash
 make clean
 ```
+
+## Database
+
+Our database is a postgres database
+
+### Migrations
+
+- Install [go-migrate](https://github.com/golang-migrate/migrate)
+
+#### Create migration
+
+```bash
+./scripts/create-migration.sh <migration-name>
+```
