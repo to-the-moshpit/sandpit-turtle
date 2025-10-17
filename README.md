@@ -75,3 +75,15 @@ Our database is a postgres database
 ```bash
 ./scripts/create-migration.sh <migration-name>
 ```
+
+#### Run migrations
+
+```bash
+./scripts/run-migrations.sh
+```
+
+#### Undo migration
+
+```bash
+./scripts/undo-migration.sh
+```
